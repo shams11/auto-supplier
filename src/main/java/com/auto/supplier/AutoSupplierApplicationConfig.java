@@ -1,6 +1,5 @@
 package com.auto.supplier;
 
-
 import com.auto.supplier.commons.auditing.AuditingDateTimeProvider;
 import com.auto.supplier.commons.auditing.DateTimeService;
 import org.springframework.context.annotation.Bean;

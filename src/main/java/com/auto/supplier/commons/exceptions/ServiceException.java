@@ -1,6 +1,5 @@
 package com.auto.supplier.commons.exceptions;
 
-
 import com.auto.supplier.commons.models.ExceptionLogLevel;
 import com.auto.supplier.commons.models.MessageKey;
 import com.google.common.base.Strings;

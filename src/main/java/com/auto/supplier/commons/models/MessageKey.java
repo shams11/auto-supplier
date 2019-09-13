@@ -1,6 +1,5 @@
 package com.auto.supplier.commons.models;
 
-
 import static com.auto.supplier.commons.models.ExceptionLogLevel.ERROR;
 import static com.auto.supplier.commons.models.ExceptionLogLevel.DEBUG;
 
