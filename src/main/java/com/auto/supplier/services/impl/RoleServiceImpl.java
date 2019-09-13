@@ -1,7 +1,5 @@
 package com.auto.supplier.services.impl;
 
-import com.auto.supplier.commons.exceptions.ServiceException;
-import com.auto.supplier.commons.models.MessageKey;
 import com.auto.supplier.commons.utils.LoggingProfiler;
 import com.auto.supplier.entities.RoleEntity;
 import com.auto.supplier.repositories.RoleRepository;
