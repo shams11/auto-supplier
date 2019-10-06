@@ -47,7 +47,7 @@ public class UserController {
 
   @GetMapping(params = "username",
       produces = MediaType.APPLICATION_JSON_VALUE)
-  //@JsonView({View.UserDetails.class}) //TODO : Need to correc this
+  //@JsonView({View.UserDetails.class}) //TODO : Need to correct this
   public User getUsersByUsername(@RequestParam(value = "username") String username) {
     return userMapper.toPojo(userService.getUserByUsername(username));
   }

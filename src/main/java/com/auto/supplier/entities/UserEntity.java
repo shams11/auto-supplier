@@ -34,13 +34,16 @@ public class UserEntity extends BaseEntity implements Serializable {
   @Column(name = "username", unique = true, length = 28, nullable = false)
   private String username;
 
+  @Column(name = "password", length = 200, nullable = false)
+  private String password;
+
   @Column(name = "first_name", length = 100, nullable = false)
   private String fname;
 
   @Column(name = "last_name", length = 100, nullable = false)
   private String lname;
 
-  @Column(name = "email", length = 100, nullable = false)
+  @Column(name = "email", unique = true, length = 100, nullable = false)
   private String email;
 
   @Column(name = "active")
@@ -53,6 +56,19 @@ public class UserEntity extends BaseEntity implements Serializable {
       uniqueConstraints = @UniqueConstraint(name = "UK_USER_ID_ROLE_ID",
           columnNames = {"USER_ID", "ROLE_ID"}))
   private Set<RoleEntity> roles = new HashSet<>();
+
+  public UserEntity(UserEntity userEntity) {
+    this.setUsername(userEntity.getUsername());
+    this.setPassword(userEntity.getPassword());
+    this.setEmail(userEntity.getEmail());
+    this.setFname(userEntity.getFname());
+    this.setLname(userEntity.getLname());
+    this.setRoles(userEntity.getRoles());
+    this.setId(userEntity.getId());
+  }
+
+  public UserEntity() {
+  }
 
   public void addRole(RoleEntity role) {
     if (role != null) {

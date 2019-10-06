@@ -10,7 +10,7 @@ import java.util.Optional;
 public class LoginServiceImpl implements LoginService {
 
   @Override
-  public Optional<User> login(String username, SensitiveString password) {
-    return Optional.empty();
+  public User login(String username, SensitiveString password) {
+    return null;
   }
 }

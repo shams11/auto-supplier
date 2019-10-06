@@ -1,10 +1,10 @@
 package com.auto.supplier.mappers;
 
-import com.auto.supplier.models.User;
 import com.auto.supplier.commons.mappers.ControllerMapper;
 import com.auto.supplier.commons.models.Permission;
 import com.auto.supplier.commons.models.Role;
 import com.auto.supplier.entities.UserEntity;
+import com.auto.supplier.models.User;
 import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 

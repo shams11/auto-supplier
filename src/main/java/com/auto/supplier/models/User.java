@@ -1,20 +1,19 @@
 package com.auto.supplier.models;
 
 import com.auto.supplier.commons.models.Role;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.util.HashSet;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.Set;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
-@Builder
 @Getter
-@ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonDeserialize(builder = User.Builder.class)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.NON_NULL)
+@Builder(builderClassName = "Builder", toBuilder = true)
 public class User {
 
   private UUID id;
@@ -29,6 +28,9 @@ public class User {
 
   private int active;
 
-  @Builder.Default
-  private Set<Role> roles = new HashSet<>();
+  private Set<Role> roles;
+
+  @JsonPOJOBuilder(withPrefix = "")
+  public static final class Builder {
+  }
 }

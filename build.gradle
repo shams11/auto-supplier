@@ -31,6 +31,7 @@ dependencies {
   compile 'org.springframework.boot:spring-boot-starter-actuator'
   compile 'org.springframework.boot:spring-boot-starter-jersey'
   compile 'org.springframework.boot:spring-boot-starter-web'
+  compile "org.springframework.boot:spring-boot-starter-security"
   compile 'org.flywaydb:flyway-core'
   compile "org.springframework.boot:spring-boot-starter-hateoas"
   compile "org.hibernate:hibernate-core"
