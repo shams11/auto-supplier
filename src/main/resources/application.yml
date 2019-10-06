@@ -13,3 +13,7 @@ spring:
       maximum-pool-size: 5
 
   datasource.platform: hsqldb
+
+auto-supplier:
+  cors:
+    origins: "*"

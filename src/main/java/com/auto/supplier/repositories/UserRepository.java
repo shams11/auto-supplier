@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface UserRepository extends GenericCrudRepository<UserEntity, UUID> {
 
   Optional<UserEntity> findByUsername(String username);
+
+  Optional<UserEntity> findByEmail(String email);
 }

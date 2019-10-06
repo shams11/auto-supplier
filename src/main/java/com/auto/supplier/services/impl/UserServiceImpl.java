@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -33,7 +32,6 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
   private final CrudServiceMediator<UserEntity, UUID> mediator;
   private final RoleService roleService;
-  Set<RoleEntity> roles = new HashSet<>(1);
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
@@ -89,6 +87,27 @@ public class UserServiceImpl implements UserService {
               user.getUsername()))
           .build();
     }
+
+    usernameExists(user.getUsername());
+    emailExists(user.getEmail());
+  }
+
+  private void usernameExists(String username) {
+    userRepository.findByUsername(username).ifPresent(u -> {
+      throw new ServiceException.Builder(MessageKey.ENTITY_EXISTS)
+          .args(username)
+          .detailMessage(String.format("User with username %s already present", username))
+          .build();
+    });
+  }
+
+  private void emailExists(String email) {
+    userRepository.findByEmail(email).ifPresent(u -> {
+      throw new ServiceException.Builder(MessageKey.ENTITY_EXISTS)
+          .args(email)
+          .detailMessage(String.format("User with email %s already present", email))
+          .build();
+    });
   }
 
   private void associateRoles(UserEntity userEntity, Set<Role> roles) {
