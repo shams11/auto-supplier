@@ -22,6 +22,7 @@ public class RoleServiceImpl implements RoleService {
   }
 
   @Override
+  // Should not be secured
   public Optional<RoleEntity> findByUniqueName(String uniqueName) {
     return roleRepository.findByUniqueName(uniqueName);
   }
