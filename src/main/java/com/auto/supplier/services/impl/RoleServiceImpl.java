@@ -22,7 +22,7 @@ public class RoleServiceImpl implements RoleService {
   }
 
   @Override
-  // Should not be secured as this is call pre-login to create user/org
+  // Should not be secured as this is pre-login to create user/org
   public Optional<RoleEntity> findByUniqueName(String uniqueName) {
     return roleRepository.findByUniqueName(uniqueName);
   }
