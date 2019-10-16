@@ -4,9 +4,9 @@ import com.auto.supplier.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class CustomUserAuthenticationDetails extends UserEntity implements UserDetails {
 
@@ -16,10 +16,12 @@ public class CustomUserAuthenticationDetails extends UserEntity implements UserD
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return getRoles()
-        .stream()
-        .map(roleEntity -> new SimpleGrantedAuthority("ROLE_" + roleEntity.getUniqueName()))
-        .collect(Collectors.toList());
+    List<GrantedAuthority> result = new ArrayList<>();
+    getRoles().
+        forEach(role ->
+            role.getPermissions().forEach(permission ->
+                result.add(new SimpleGrantedAuthority(permission.getUniqueName()))));
+    return result;
   }
 
   @Override

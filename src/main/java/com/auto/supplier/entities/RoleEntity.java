@@ -24,7 +24,7 @@ import lombok.ToString;
 })
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = { "description" })
+@ToString(callSuper = true, exclude = { "description", "permissions" })
 @EqualsAndHashCode(callSuper = true, of = {}) // keep {} to only include id/version from BaseEntity
 public class RoleEntity extends  BaseEntity implements Serializable {
 

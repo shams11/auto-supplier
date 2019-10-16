@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('CREATE_USER')")
   @Transactional
   public UserEntity createUser(User user) {
     validateUserDetails(user);
