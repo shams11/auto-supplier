@@ -13,6 +13,7 @@ import com.auto.supplier.repositories.UserRepository;
 import com.auto.supplier.services.RoleService;
 import com.auto.supplier.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
+  private static final String DEFAULT_PASSWORD = "$2a$04$60WnjxGpXS8zlH7w3W0Sk.D3YNJA7zWU8iuLug8HpCSWnjXvrQVoS";
   private final UserRepository userRepository;
   private final UserMapper userMapper;
   private final CrudServiceMediator<UserEntity, UUID> mediator;
@@ -45,15 +47,20 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  //@PreAuthorize("hasAuthority('CREATE_USER')")
+  @PreAuthorize("hasAuthority('ADMIN')")
   @Transactional
   public UserEntity createUser(User user) {
     validateUserDetails(user);
     UserEntity userEntity = userMapper.toEntity(user);
     associateRoles(userEntity, user.getRoles());
+    setDefaultPassword(userEntity);
     userEntity = mediator.create(userEntity);
-    //sendActivationMail
+    //sendActivationMail with reset password link
     return userEntity;
+  }
+
+  private void setDefaultPassword(UserEntity userEntity) {
+    userEntity.setPassword(DEFAULT_PASSWORD);
   }
 
   @Override
