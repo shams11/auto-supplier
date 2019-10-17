@@ -33,6 +33,7 @@ public class UserMapper implements ControllerMapper<UserEntity, User> {
     }
     return User.builder()
         .id(userEntity.getId())
+        .username(userEntity.getUsername())
         .active(userEntity.getActive())
         .email(userEntity.getEmail())
         .fname(userEntity.getFname())

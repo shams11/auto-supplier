@@ -51,30 +51,17 @@ public class CrudMediator<T extends Entity, ID>
   @Override
   @Transactional
   public T update(ID id, T entity) {
-    if (id == null) {
-      throw new ServiceException.Builder(MessageKey.MISSING_REQUIRED_FIELD)
-          .args("id")
-          .build();
-    }
-
-    if (entity.getId() != null) {
-      throw new ServiceException.Builder(MessageKey.ILLEGAL_FIELD)
-          .args(entity.getId())
-          .build();
-    }
+    validateIdFiled(id, entity);
 
     T savedEntity = repository.findById(id).orElseThrow(() ->
         new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
             .build());
-
     BeanUtils.copyProperties(entity, savedEntity, entity.getDoNotUpdateFields());
 
     return repository.save(savedEntity);
   }
 
-  @Override
-  @Transactional
-  public T patch(ID id, T entity) {
+  private void validateIdFiled(ID id, T entity) {
     if (id == null) {
       throw new ServiceException.Builder(MessageKey.MISSING_REQUIRED_FIELD)
           .args("id")
@@ -86,13 +73,17 @@ public class CrudMediator<T extends Entity, ID>
           .args(entity.getId())
           .build();
     }
+  }
+
+  @Override
+  @Transactional
+  public T patch(ID id, T entity) {
+    validateIdFiled(id, entity);
 
     T savedEntity = repository.findById(id).orElseThrow(() ->
         new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
             .build());
-
     BeanUtils.copyProperties(entity, savedEntity, getIgnoreFieldsForPath(entity));
-
     return repository.save(savedEntity);
   }
 

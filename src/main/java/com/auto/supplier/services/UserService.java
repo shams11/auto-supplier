@@ -7,11 +7,15 @@ import java.util.UUID;
 
 public interface UserService {
 
-  UserEntity createUser(User user);
+  UserEntity create(User user);
 
   UserEntity getUserByUsername(String username);
 
+  UserEntity getUserByEmail(String email);
+
   List<UserEntity> getAllUsers();
 
-  void deleteOrg(UUID id);
+  void delete(UUID id);
+
+  UserEntity update(UUID id, User user);
 }

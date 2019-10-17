@@ -12,6 +12,7 @@ import com.auto.supplier.mappers.UserMapper;
 import com.auto.supplier.repositories.UserRepository;
 import com.auto.supplier.services.RoleService;
 import com.auto.supplier.services.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-  private static final String DEFAULT_PASSWORD = "$2a$04$60WnjxGpXS8zlH7w3W0Sk.D3YNJA7zWU8iuLug8HpCSWnjXvrQVoS";
+  // default hash for password "welcome1a"
+  private static final String DEFAULT_PASSWORD = "$2a$04$60WnjxGpXS8zlH7w3W0Sk" +
+      ".D3YNJA7zWU8iuLug8HpCSWnjXvrQVoS";
   private final UserRepository userRepository;
   private final UserMapper userMapper;
   private final CrudServiceMediator<UserEntity, UUID> mediator;
@@ -49,7 +52,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @PreAuthorize("hasAuthority('CREATE_USER')")
   @Transactional
-  public UserEntity createUser(User user) {
+  public UserEntity create(User user) {
     validateUserDetails(user);
     UserEntity userEntity = userMapper.toEntity(user);
     associateRoles(userEntity, user.getRoles());
@@ -73,6 +76,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserEntity getUserByEmail(String email) {
+    return userRepository.findByEmail(email).orElseThrow(() ->
+        new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
+            .args(email)
+            .detailMessage(String.format("User not found for user email ", email))
+            .build());
+  }
+
+  @Override
   public List<UserEntity> getAllUsers() {
     return userRepository.findAll();
   }
@@ -84,9 +96,16 @@ public class UserServiceImpl implements UserService {
           .detailMessage("Id should be null while creating userEntity")
           .build();
     }
-    if (StringUtils.isEmpty(user.getUsername()) &&
-        StringUtils.isEmpty(user.getEmail()) &&
-        StringUtils.isEmpty(user.getFname()) &&
+    validateEmptyFields(user);
+
+    usernameExists(user.getUsername());
+    emailExists(user.getEmail());
+  }
+
+  private void validateEmptyFields(User user) {
+    if (StringUtils.isEmpty(user.getUsername()) ||
+        StringUtils.isEmpty(user.getEmail()) ||
+        StringUtils.isEmpty(user.getFname()) ||
         StringUtils.isEmpty(user.getLname())) {
       throw new ServiceException.Builder(MessageKey.BAD_REQUEST)
           .args(user.getUsername())
@@ -94,9 +113,6 @@ public class UserServiceImpl implements UserService {
               user.getUsername()))
           .build();
     }
-
-    usernameExists(user.getUsername());
-    emailExists(user.getEmail());
   }
 
   private void usernameExists(String username) {
@@ -118,10 +134,10 @@ public class UserServiceImpl implements UserService {
   }
 
   private void associateRoles(UserEntity userEntity, Set<Role> roles) {
-    if(CollectionUtils.isEmpty(roles)) {
+    if (CollectionUtils.isEmpty(roles)) {
       throw new ServiceException.Builder(MessageKey.ILLEGAL_FIELD)
           .args("roles")
-          .detailMessage(String.format("Role is empty for username " ,
+          .detailMessage(String.format("Role is empty for username ",
               userEntity.getUsername()))
           .build();
     }
@@ -139,8 +155,26 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @PreAuthorize("hasAuthority('UPDATE_USER')")
   @Transactional
-  public void deleteOrg(UUID id) {
+  public UserEntity update(UUID id, User user) {
+
+    validateEmptyFields(user);
+    UserEntity userEntity = userMapper.toEntity(user);
+    UserEntity savedEntity = userRepository.findById(id).orElseThrow(() ->
+        new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
+            .build());
+    String savedPassword = savedEntity.getPassword();
+    BeanUtils.copyProperties(userEntity, savedEntity, userEntity.getDoNotUpdateFields());
+    // TODO: discuss whether allow admin to update any user's password ?
+    savedEntity.setPassword(savedPassword);
+    return userRepository.save(savedEntity);
+  }
+
+  @Override
+  @PreAuthorize("hasAuthority('DELETE_USER')")
+  @Transactional
+  public void delete(UUID id) {
     mediator.delete(id);
   }
 }

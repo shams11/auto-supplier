@@ -48,7 +48,8 @@ public class UserEntity extends BaseEntity implements Serializable {
   @Column(name = "active")
   private int active;
 
-  @ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+      fetch = FetchType.EAGER)
   @JoinTable(name = "USER_ROLE",
       joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
       inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")},
