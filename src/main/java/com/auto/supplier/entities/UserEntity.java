@@ -19,7 +19,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "USER",
+@Table(name = "SA_USER",
     indexes = {
         @Index(name = "IDX_USER_NAME", columnList = "username", unique = true),
         @Index(name = "IDX_EMAIL", columnList = "email", unique = true)

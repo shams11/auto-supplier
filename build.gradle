@@ -42,7 +42,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
   compile('javax.xml.bind:jaxb-api:2.3.0')
-
+  runtimeOnly 'org.postgresql:postgresql'
   compile "com.google.guava:guava:27.0.1-jre"
   runtime "org.hsqldb:hsqldb"
 }

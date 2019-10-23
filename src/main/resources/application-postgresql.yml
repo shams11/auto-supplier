@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springboot-postgres
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+    validationQuery: select 1
+    testWhileIdle: true
+
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernat:
+      auto-ddl: create-drop
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
