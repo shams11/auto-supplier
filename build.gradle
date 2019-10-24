@@ -51,7 +51,7 @@ bootRun {
   main = 'com.sap.ariba.sellerapp.auth.AutoSupplierApplication'
   jvmArgs = ["-XX:MaxMetaspaceSize=480m"]
   systemProperty "server.port", "9090"
-  systemProperty "spring.profiles.active", "test,hsql"
+  systemProperty "spring.profiles.active", "test,postgresql"
 }
 
 clean.doFirst {
