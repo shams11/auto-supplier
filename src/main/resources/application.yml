@@ -16,6 +16,19 @@ spring:
 
   datasource.platform: hsqldb
 
+  mail:
+    host: smtp.gmail.com
+    username: shams.tabrez11@gmail.com
+    password: kxyupevevtddcbgz
+    fromAddress: shamst242@gmail.com
+    createUserSubject: Your account is created, change the password
+    port: 587
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
 auto-supplier:
   cors:
     origins: "*"

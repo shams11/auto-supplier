@@ -10,6 +10,7 @@ import com.auto.supplier.entities.RoleEntity;
 import com.auto.supplier.entities.UserEntity;
 import com.auto.supplier.mappers.UserMapper;
 import com.auto.supplier.repositories.UserRepository;
+import com.auto.supplier.services.MailService;
 import com.auto.supplier.services.RoleService;
 import com.auto.supplier.services.UserService;
 import org.springframework.beans.BeanUtils;
@@ -37,16 +38,18 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
   private final CrudServiceMediator<UserEntity, UUID> mediator;
   private final RoleService roleService;
+  private final MailService mailService;
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
                          UserMapper userMapper,
-                         RoleService roleService
-  ) {
+                         RoleService roleService,
+                         MailService mailService) {
     this.userRepository = userRepository;
     this.userMapper = userMapper;
     this.roleService = roleService;
     this.mediator = new CrudMediator<>(userRepository);
+    this.mailService = mailService;
   }
 
   @Override
@@ -59,6 +62,7 @@ public class UserServiceImpl implements UserService {
     setDefaultPassword(userEntity);
     userEntity = mediator.create(userEntity);
     //sendActivationMail with reset password link
+    mailService.sendMail(user);
     return userEntity;
   }
 
