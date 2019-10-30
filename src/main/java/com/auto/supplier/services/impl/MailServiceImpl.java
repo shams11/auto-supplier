@@ -5,9 +5,14 @@ import com.auto.supplier.properties.AutoSupplierSpringProperty;
 import com.auto.supplier.properties.MailProperty;
 import com.auto.supplier.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import java.io.File;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -24,11 +29,38 @@ public class MailServiceImpl implements MailService {
 
   @Override
   public void sendMail(User user) {
+    SimpleMailMessage mail = buildSimpleMailMessage(user);
+    javaMailSender.send(mail);
+  }
+
+  private SimpleMailMessage buildSimpleMailMessage(User user) {
     SimpleMailMessage mail = new SimpleMailMessage();
     mail.setTo(user.getEmail());
     mail.setFrom(mailProperty.getUsername());
     mail.setSubject(mailProperty.getCreateUserSubject());
+    // TODO: Need to remove the hard coding below
     mail.setText("Test email from shams");
-    javaMailSender.send(mail);
+    return mail;
+  }
+
+  @Override
+  public void sendMailWithAttachment(User user) throws MessagingException {
+    MimeMessage message = javaMailSender.createMimeMessage();
+    buildMimeMessageHelper(message, user);
+    javaMailSender.send(message);
+  }
+
+  private void buildMimeMessageHelper(MimeMessage message, User user)
+      throws MessagingException {
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true);
+    mimeMessageHelper.setTo(user.getEmail());
+    mimeMessageHelper.setFrom(mailProperty.getUsername());
+    mimeMessageHelper.setSubject(mailProperty.getPartProductionSubject());
+    // TODO: Need to remove the hard coding below
+    mimeMessageHelper.setText(" Test email with attachment from shams");
+    FileSystemResource file
+        = new FileSystemResource(new
+        File("/Users/i334072/Desktop/US Invite letter format.doc"));
+    mimeMessageHelper.addAttachment("Visa-doc", file);
   }
 }

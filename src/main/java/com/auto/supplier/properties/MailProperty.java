@@ -9,4 +9,5 @@ public class MailProperty {
   private String username;
   private String fromAddress;
   private String createUserSubject;
+  private String partProductionSubject;
 }

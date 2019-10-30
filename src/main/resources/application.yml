@@ -7,6 +7,8 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
   application:
     name:  "auto-supplier"
     datasource.hikari: #HikariCP connection Pool
@@ -22,6 +24,7 @@ spring:
     password: kxyupevevtddcbgz
     fromAddress: shamst242@gmail.com
     createUserSubject: Your account is created, change the password
+    partProductionSubject: Part production details
     port: 587
     properties:
       mail:
