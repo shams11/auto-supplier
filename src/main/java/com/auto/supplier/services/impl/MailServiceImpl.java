@@ -28,20 +28,21 @@ public class MailServiceImpl implements MailService {
   }
 
   @Override
-  public void sendMail(User user) {
-    SimpleMailMessage mail = buildSimpleMailMessage(user);
+  public void sendMail(User user, String resetPasswordLink) {
+    SimpleMailMessage mail = buildSimpleMailMessage(user, resetPasswordLink);
     javaMailSender.send(mail);
   }
 
-  private SimpleMailMessage buildSimpleMailMessage(User user) {
+  private SimpleMailMessage buildSimpleMailMessage(User user,
+                                                   String resetPasswordLink) {
     SimpleMailMessage mail = new SimpleMailMessage();
     mail.setTo(user.getEmail());
     mail.setFrom(mailProperty.getUsername());
     mail.setSubject(mailProperty.getCreateUserSubject());
-    // TODO: Need to remove the hard coding below
-    mail.setText("Test email from shams");
+    mail.setText("To reset your password, click the link below:\n" + resetPasswordLink);
     return mail;
   }
+
 
   @Override
   public void sendMailWithAttachment(User user) throws MessagingException {

@@ -5,7 +5,6 @@ import com.auto.supplier.commons.utils.LoggingProfiler;
 import com.auto.supplier.mappers.UserMapper;
 import com.auto.supplier.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -43,8 +44,9 @@ public class UserController {
   )
   @ResponseStatus(HttpStatus.CREATED)
   public User createUser(
-      @RequestBody @Valid User user) {
-    return userMapper.toPojo(userService.create(user));
+      @RequestBody @Valid User user, HttpServletRequest httpServletRequest)
+      throws MalformedURLException {
+    return userMapper.toPojo(userService.create(user, httpServletRequest));
   }
 
   @PutMapping(value = "/{id}",

@@ -2,12 +2,14 @@ package com.auto.supplier.services;
 
 import com.auto.supplier.models.User;
 import com.auto.supplier.entities.UserEntity;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 
 public interface UserService {
 
-  UserEntity create(User user);
+  UserEntity create(User user, HttpServletRequest httpServletRequest) throws MalformedURLException;
 
   UserEntity getUserByUsername(String username);
 
