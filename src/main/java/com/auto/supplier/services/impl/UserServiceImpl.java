@@ -1,15 +1,15 @@
 package com.auto.supplier.services.impl;
 
-import com.auto.supplier.commons.services.CrudServiceMediator;
-import com.auto.supplier.entities.ResetPasswordEntity;
-import com.auto.supplier.models.User;
 import com.auto.supplier.commons.exceptions.ServiceException;
 import com.auto.supplier.commons.models.MessageKey;
 import com.auto.supplier.commons.models.Role;
+import com.auto.supplier.commons.services.CrudServiceMediator;
 import com.auto.supplier.commons.utils.LoggingProfiler;
+import com.auto.supplier.entities.ResetPasswordEntity;
 import com.auto.supplier.entities.RoleEntity;
 import com.auto.supplier.entities.UserEntity;
 import com.auto.supplier.mappers.UserMapper;
+import com.auto.supplier.models.User;
 import com.auto.supplier.repositories.ResetPasswordRepository;
 import com.auto.supplier.repositories.UserRepository;
 import com.auto.supplier.services.MailService;
@@ -18,6 +18,7 @@ import com.auto.supplier.services.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -39,13 +40,16 @@ public class UserServiceImpl implements UserService {
   // default hash for password "welcome1a"
   private static final String DEFAULT_PASSWORD = "$2a$04$60WnjxGpXS8zlH7w3W0Sk" +
       ".D3YNJA7zWU8iuLug8HpCSWnjXvrQVoS";
-  private static final String RESET_PASSWORD_API_PATH = "/reset-password";
+  private static final String RESET_PASSWORD_API_PATH = "/v1/users/reset-password";
   private final UserRepository userRepository;
+  private final ResetPasswordRepository resetPasswordRepository;
   private final UserMapper userMapper;
   private final CrudServiceMediator<UserEntity, UUID> mediator;
   private final RoleService roleService;
   private final MailService mailService;
   private final CrudServiceMediator<ResetPasswordEntity, UUID> resetPasswordMediator;
+
+
 
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
@@ -54,6 +58,7 @@ public class UserServiceImpl implements UserService {
                          MailService mailService,
                          ResetPasswordRepository resetPasswordRepository) {
     this.userRepository = userRepository;
+    this.resetPasswordRepository = resetPasswordRepository;
     this.userMapper = userMapper;
     this.roleService = roleService;
     this.mediator = new CrudMediator<>(userRepository);
@@ -206,6 +211,72 @@ public class UserServiceImpl implements UserService {
     // TODO: discuss whether allow admin to update any user's password ?
     savedEntity.setPassword(savedPassword);
     return userRepository.save(savedEntity);
+  }
+
+  @Override
+  @Transactional
+  public void resetPassword(String resetToken,
+                            String newPassword) {
+    validateResetPasswordInput(resetToken, newPassword);
+    resetPasswordRepository
+        .findByResetToken(resetToken)
+        .ifPresentOrElse(
+            resetPasswordEntity -> updateNewPassword(resetPasswordEntity, newPassword),
+            () -> handleResetTokenNotFound(resetToken));
+  }
+
+  @Override
+  public boolean isResetTokenValid(String resetToken) {
+    if (StringUtils.isEmpty(resetToken)) {
+      throw new ServiceException.Builder(MessageKey.BAD_REQUEST)
+          .detailMessage("reset token must be present.")
+          .build();
+    }
+    return resetPasswordRepository
+        .findByResetToken(resetToken)
+        .isPresent();
+  }
+
+  private void handleResetTokenNotFound(String resetToken) {
+    throw new ServiceException.Builder(MessageKey.TOKEN_EXPIRED)
+        .args(resetToken)
+        .detailMessage(String.format("Token %s is expired : ", resetToken))
+        .build();
+  }
+
+  private void updateNewPassword(ResetPasswordEntity resetPasswordEntity,
+                                 String newPassword) {
+    if (isResetTokenExpired(resetPasswordEntity)) {
+      // TODO : validate token time
+    }
+    UserEntity userEntity = userRepository.findByEmail(resetPasswordEntity.getEmail())
+        .orElseThrow(() -> new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
+            .detailMessage(String.format("Could not find user with email %s ",
+                resetPasswordEntity.getEmail()))
+            .build());
+    userEntity.setPassword(new BCryptPasswordEncoder().encode((newPassword)));
+    userRepository.save(userEntity);
+    resetPasswordMediator.delete(resetPasswordEntity.getId());
+  }
+
+  private boolean isResetTokenExpired(ResetPasswordEntity resetPasswordEntity) {
+   //  ZonedDateTime result = (ZonedDateTime.now(ZoneId.systemDefault()).minusHours(resetPasswordEntity.getTimeCreated().getLong()));
+   return false;
+  }
+
+  private void validateResetPasswordInput(String resetToken,
+                                          String password) {
+    if (StringUtils.isEmpty(resetToken)) {
+        throw new ServiceException.Builder(MessageKey.BAD_REQUEST)
+            .detailMessage("reset token must be present.")
+            .build();
+      }
+
+    if (StringUtils.isEmpty(password)) {
+      throw new ServiceException.Builder(MessageKey.BAD_REQUEST)
+          .detailMessage("password must be present.")
+          .build();
+    }
   }
 
   @Override

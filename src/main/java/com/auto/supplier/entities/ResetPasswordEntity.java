@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 public class ResetPasswordEntity extends BaseEntity implements Serializable {
 
-  @Column(name = "email", unique = true, length = 100, nullable = false)
+  @Column(name = "email", length = 100, nullable = false)
   private String email;
 
   @Column(name = "reset_token", unique = true, nullable = false)

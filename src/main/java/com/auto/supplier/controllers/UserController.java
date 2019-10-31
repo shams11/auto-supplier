@@ -83,7 +83,21 @@ public class UserController {
 
   @DeleteMapping(value = "/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteOrg(@PathVariable("id") UUID id) {
+  public void delete(@PathVariable("id") UUID id) {
     userService.delete(id);
+  }
+
+  @PutMapping(value = "/reset-password",
+      consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public void resetPassword(@RequestParam(value = "token", required = false) String token,
+                            @RequestParam(value = "password") String newPassword) {
+
+    userService.resetPassword(token, newPassword);
+  }
+
+  @GetMapping(value = "/is-token-valid")
+  public boolean isResetTokenValid(@RequestParam("token") String token) {
+    return userService.isResetTokenValid(token);
   }
 }
