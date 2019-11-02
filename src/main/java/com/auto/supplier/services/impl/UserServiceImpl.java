@@ -246,9 +246,6 @@ public class UserServiceImpl implements UserService {
 
   private void updateNewPassword(ResetPasswordEntity resetPasswordEntity,
                                  String newPassword) {
-    if (isResetTokenExpired(resetPasswordEntity)) {
-      // TODO : validate token time
-    }
     UserEntity userEntity = userRepository.findByEmail(resetPasswordEntity.getEmail())
         .orElseThrow(() -> new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
             .detailMessage(String.format("Could not find user with email %s ",
@@ -257,11 +254,6 @@ public class UserServiceImpl implements UserService {
     userEntity.setPassword(new BCryptPasswordEncoder().encode((newPassword)));
     userRepository.save(userEntity);
     resetPasswordMediator.delete(resetPasswordEntity.getId());
-  }
-
-  private boolean isResetTokenExpired(ResetPasswordEntity resetPasswordEntity) {
-   //  ZonedDateTime result = (ZonedDateTime.now(ZoneId.systemDefault()).minusHours(resetPasswordEntity.getTimeCreated().getLong()));
-   return false;
   }
 
   private void validateResetPasswordInput(String resetToken,
