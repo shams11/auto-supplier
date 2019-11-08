@@ -1,7 +1,7 @@
 package com.auto.supplier.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,5 +54,5 @@ public class ModelEntity extends BaseEntity implements Serializable {
   private BrandEntity brand;
 
   @OneToMany(mappedBy = "model", orphanRemoval = true, cascade = CascadeType.ALL)
-  private List<VariantEntity> variants;
+  private Set<VariantEntity> variants;
 }

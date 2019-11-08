@@ -11,4 +11,7 @@ public interface BrandService {
   BrandEntity getLogoById(UUID id);
 
   void delete(UUID id);
+
+  BrandEntity updateBrand(UUID id, String name, MultipartFile logo);
+
 }

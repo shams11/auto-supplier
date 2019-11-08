@@ -65,6 +65,18 @@ public class BrandServiceImpl implements BrandService {
     mediator.delete(id);
   }
 
+  @Override
+  @PreAuthorize("hasAuthority('UPDATE_BRAND')")
+  @Transactional
+  public BrandEntity updateBrand(UUID id, String name, MultipartFile logo) {
+    BrandEntity brandEntity = new BrandEntity();
+    brandEntity.setLogoFileName(logo.getOriginalFilename());
+    brandEntity.setLogo(extractByteFromMultipartFile(logo));
+    brandEntity.setUniqueName(name);
+    brandEntity = mediator.patch(id, brandEntity);
+    return brandEntity;
+  }
+
   private byte[] extractByteFromMultipartFile(MultipartFile logo) {
     try {
       return logo.getBytes();

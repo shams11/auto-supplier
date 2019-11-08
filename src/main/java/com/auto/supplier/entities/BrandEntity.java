@@ -2,7 +2,7 @@ package com.auto.supplier.entities;
 
 import org.hibernate.annotations.Type;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +28,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true, of = {}) // keep {} to only include id/version from BaseEntity
-@ToString
+@ToString(callSuper = true, exclude = {"models"})
 public class BrandEntity extends BaseEntity implements Serializable {
 
   @NonNull
@@ -49,5 +49,5 @@ public class BrandEntity extends BaseEntity implements Serializable {
   private byte[] logo;
 
   @OneToMany(mappedBy = "brand", orphanRemoval = true, cascade = CascadeType.ALL)
-  private List<ModelEntity> models;
+  private Set<ModelEntity> models;
 }
