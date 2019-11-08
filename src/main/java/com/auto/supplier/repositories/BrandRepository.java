@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface BrandRepository extends GenericCrudRepository<BrandEntity, UUID> {
-  Optional<BrandEntity> findByName(String name);
+  Optional<BrandEntity> findByUniqueName(String name);
 }

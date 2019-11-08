@@ -7,6 +7,7 @@ import com.auto.supplier.models.Brand;
 import com.auto.supplier.services.BrandService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,5 +47,11 @@ public class BrandController {
   public byte[] getBrandLogoById(@PathVariable(value = "id") UUID id) {
      BrandEntity brandEntity = brandService.getLogoById(id);
      return brandEntity.getLogo();
+  }
+
+  @DeleteMapping(value = "/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable("id") UUID id) {
+    brandService.delete(id);
   }
 }

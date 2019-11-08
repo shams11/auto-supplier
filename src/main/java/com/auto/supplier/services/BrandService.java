@@ -5,7 +5,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 public interface BrandService {
+
   BrandEntity createBrand(String name, MultipartFile logo);
 
   BrandEntity getLogoById(UUID id);
+
+  void delete(UUID id);
 }
