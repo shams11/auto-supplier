@@ -1,5 +1,6 @@
 package com.auto.supplier.entities;
 
+import org.hibernate.annotations.Type;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -41,11 +42,11 @@ public class BrandEntity extends BaseEntity implements Serializable {
 
   @Column(
       nullable = false,
-      name = "logo",
-      columnDefinition = "blob"
+      name = "logo"
   )
   @Lob
-  private byte[] brandLogo;
+  @Type(type = "org.hibernate.type.BinaryType")
+  private byte[] logo;
 
   @OneToMany(mappedBy = "brand", orphanRemoval = true, cascade = CascadeType.ALL)
   private List<ModelEntity> models;
