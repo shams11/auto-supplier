@@ -1,12 +1,15 @@
 package com.auto.supplier.entities;
 
+import org.hibernate.annotations.Type;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -34,23 +37,17 @@ public class ModelEntity extends BaseEntity implements Serializable {
   @Column(name = "unique_name", nullable = false)
   public String uniqueName;
 
-  @Column(
-      name = "logo_file_name"
-  )
+  @Column( name = "logo_file_name")
   private String modelLogoFileName;
 
-  @Column(
-      nullable = false,
-      name = "logo",
-      columnDefinition = "blob"
-  )
+  @Column(nullable = false,name = "logo")
   @Lob
+  @Type(type = "org.hibernate.type.BinaryType")
   private byte[] modelLogo;
 
-  @Column(
-      name = "brand_id",
-      nullable = false
-  )
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "brand_id",nullable = false)
   private BrandEntity brand;
 
   @OneToMany(mappedBy = "model", orphanRemoval = true, cascade = CascadeType.ALL)

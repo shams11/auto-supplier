@@ -50,11 +50,12 @@ public class BrandServiceImpl implements BrandService {
   }
 
   @Override
+  @PreAuthorize("hasAuthority('READ_BRAND')")
   public BrandEntity getLogoById(UUID id) {
     return brandRepository.findById(id).orElseThrow(() ->
         new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
             .args(id)
-            .detailMessage(String.format("Brand logo not found for id ", id))
+            .detailMessage(String.format("Brand logo not found for id %s ", id))
             .build());
   }
 

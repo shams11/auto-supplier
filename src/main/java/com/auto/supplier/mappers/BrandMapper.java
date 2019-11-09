@@ -6,7 +6,7 @@ import com.auto.supplier.models.Brand;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Brandmapper implements ControllerMapper<BrandEntity, Brand> {
+public class BrandMapper implements ControllerMapper<BrandEntity, Brand> {
 
   @Override
   public BrandEntity toEntity(Brand brand) {
@@ -26,6 +26,7 @@ public class Brandmapper implements ControllerMapper<BrandEntity, Brand> {
       return null;
     }
     return Brand.builder()
+        .id(brandEntity.getId().toString())
         .name(brandEntity.getUniqueName())
         .logoFileName(brandEntity.getLogoFileName())
         .logo(brandEntity.getLogo())
