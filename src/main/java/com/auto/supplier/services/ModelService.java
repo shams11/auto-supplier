@@ -16,4 +16,6 @@ public interface ModelService {
   ModelEntity updateModel(UUID id, String name, MultipartFile logo, UUID brandId);
 
   List<ModelEntity> getAllModels();
+
+  List<ModelEntity> getAllModelsByBrand(UUID brandId);
 }

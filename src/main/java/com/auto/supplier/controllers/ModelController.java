@@ -56,6 +56,13 @@ public class ModelController {
         .collect(Collectors.toList());
   }
 
+  @GetMapping(params = "brandId", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Model> getAllModelsByBrand(@RequestParam(value = "brandId") UUID brandId) {
+    return modelService.getAllModelsByBrand(brandId).stream()
+        .map(modelmapper::toPojo)
+        .collect(Collectors.toList());
+  }
+
   @PutMapping(value = "/{id}",
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public Model update(

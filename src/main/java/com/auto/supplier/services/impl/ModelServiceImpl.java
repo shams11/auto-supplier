@@ -108,6 +108,11 @@ public class ModelServiceImpl implements ModelService {
     return modelRepository.findAll();
   }
 
+  @Override
+  public List<ModelEntity> getAllModelsByBrand(UUID brandId) {
+    return modelRepository.findAllByBrandId(brandId);
+  }
+
   private byte[] extractByteFromMultipartFile(MultipartFile logo) {
     try {
       return logo.getBytes();
