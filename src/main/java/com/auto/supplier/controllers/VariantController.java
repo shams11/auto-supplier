@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @LoggingProfiler
@@ -39,6 +41,13 @@ public class VariantController {
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public Variant getVariantById(@RequestParam(value = "code") String code) {
     return variantMapper.toPojo(variantService.getVariantByCode(code));
+  }
+
+  @GetMapping(params = "modelId", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Variant> getAllVariantsByModel(@RequestParam(value = "modelId") UUID modelId) {
+    return variantService.getAllVariantsByModel(modelId).stream()
+        .map(variantMapper::toPojo)
+        .collect(Collectors.toList());
   }
 
   @PutMapping(value = "/{id}",

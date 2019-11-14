@@ -11,7 +11,6 @@ import com.auto.supplier.models.Variant;
 import com.auto.supplier.repositories.ModelRepository;
 import com.auto.supplier.repositories.VariantRepository;
 import com.auto.supplier.services.VariantService;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,8 +98,8 @@ public class VariantServiceImpl implements VariantService {
   @Override
   @PreAuthorize("hasAuthority('READ_VARIANT')")
   @Transactional
-  public List<VariantEntity> getAllVariantsByModel(UUID modelId, Pageable pageable) {
-    return null;
+  public List<VariantEntity> getAllVariantsByModel(UUID modelId) {
+    return variantRepository.findAllByModelId(modelId);
   }
 
   @Override

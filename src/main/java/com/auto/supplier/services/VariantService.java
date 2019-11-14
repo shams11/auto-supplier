@@ -18,5 +18,6 @@ public interface VariantService {
 
   VariantEntity updateVariant(UUID id, Variant variant);
 
-  List<VariantEntity> getAllVariantsByModel(UUID modelId, Pageable pageable);
+  List<VariantEntity> getAllVariantsByModel(UUID modelId);
+
 }
