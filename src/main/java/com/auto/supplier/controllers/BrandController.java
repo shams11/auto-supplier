@@ -71,14 +71,14 @@ public class BrandController {
     brandService.delete(id);
   }
 
-  @PostMapping( value = "/{id}/models",
+  @PostMapping( value = "/{brandId}/models",
       consumes = {"multipart/form-data"},
       produces = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
   @ResponseStatus(HttpStatus.CREATED)
-  public Model createModel(@PathVariable("id") UUID id,
+  public Model createModel(@PathVariable("brandId") UUID brandId,
                            @RequestParam(value = "name") String name,
                       @RequestParam("logo") MultipartFile logo) {
-    return modelmapper.toPojo(modelService.createModel(id, name, logo));
+    return modelmapper.toPojo(modelService.createModel(brandId, name, logo));
   }
 }
