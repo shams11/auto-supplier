@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @LoggingProfiler
@@ -54,6 +56,13 @@ public class BrandController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Brand getBrandById(@PathVariable(value = "id") UUID id) {
     return brandmapper.toPojo(brandService.getLogoById(id));
+  }
+
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Brand> getAllBrands() {
+    return brandService.getAllBrands().stream()
+        .map(brandmapper::toPojo)
+        .collect(Collectors.toList());
   }
 
   @PutMapping(value = "/{id}",

@@ -2,6 +2,7 @@ package com.auto.supplier.services;
 
 import com.auto.supplier.entities.BrandEntity;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 import java.util.UUID;
 
 public interface BrandService {
@@ -14,4 +15,5 @@ public interface BrandService {
 
   BrandEntity updateBrand(UUID id, String name, MultipartFile logo);
 
+  List<BrandEntity> getAllBrands();
 }
