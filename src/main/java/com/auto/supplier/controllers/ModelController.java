@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 @RestController
@@ -45,6 +47,13 @@ public class ModelController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Model getModelById(@PathVariable(value = "id") UUID id) {
     return modelmapper.toPojo(modelService.getModelById(id));
+  }
+
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Model> getAllBrands() {
+    return modelService.getAllModels().stream()
+        .map(modelmapper::toPojo)
+        .collect(Collectors.toList());
   }
 
   @PutMapping(value = "/{id}",
