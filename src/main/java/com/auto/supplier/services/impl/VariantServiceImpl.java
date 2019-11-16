@@ -31,7 +31,8 @@ public class VariantServiceImpl implements VariantService {
   private final VariantMapper variantMapper;
 
   public VariantServiceImpl(VariantRepository variantRepository,
-                            ModelRepository modelRepository, VariantMapper variantMapper) {
+                            ModelRepository modelRepository,
+                            VariantMapper variantMapper) {
     this.variantRepository = variantRepository;
     this.modelRepository = modelRepository;
     this.mediator = new CrudMediator<>(variantRepository);

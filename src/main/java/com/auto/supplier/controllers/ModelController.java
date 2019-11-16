@@ -50,7 +50,7 @@ public class ModelController {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<Model> getAllBrands() {
+  public List<Model> getAllModels() {
     return modelService.getAllModels().stream()
         .map(modelmapper::toPojo)
         .collect(Collectors.toList());
