@@ -3,10 +3,18 @@ package com.auto.supplier.mappers;
 import com.auto.supplier.commons.mappers.ControllerMapper;
 import com.auto.supplier.entities.BrandEntity;
 import com.auto.supplier.models.Brand;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BrandMapper implements ControllerMapper<BrandEntity, Brand> {
+
+  private final OrganizationMapper organizationMapper;
+
+  @Autowired
+  public BrandMapper(OrganizationMapper organizationMapper) {
+    this.organizationMapper = organizationMapper;
+  }
 
   @Override
   public BrandEntity toEntity(Brand brand) {
@@ -30,6 +38,7 @@ public class BrandMapper implements ControllerMapper<BrandEntity, Brand> {
         .name(brandEntity.getUniqueName())
         .logoFileName(brandEntity.getLogoFileName())
         .logo(brandEntity.getLogo())
+        .org(organizationMapper.toPojo(brandEntity.getOrg()))
         .build();
   }
 }

@@ -5,8 +5,10 @@ import com.auto.supplier.commons.models.MessageKey;
 import com.auto.supplier.commons.services.CrudServiceMediator;
 import com.auto.supplier.commons.utils.LoggingProfiler;
 import com.auto.supplier.entities.BrandEntity;
+import com.auto.supplier.entities.UserEntity;
 import com.auto.supplier.repositories.BrandRepository;
 import com.auto.supplier.services.BrandService;
+import com.auto.supplier.services.LoggedInUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +26,12 @@ public class BrandServiceImpl implements BrandService {
 
   private final BrandRepository brandRepository;
   private final CrudServiceMediator<BrandEntity, UUID> mediator;
+  private final LoggedInUserService loggedInUserService;
 
-  public BrandServiceImpl(BrandRepository brandRepository) {
+  public BrandServiceImpl(BrandRepository brandRepository, LoggedInUserService loggedInUserService) {
     this.brandRepository = brandRepository;
     this.mediator = new CrudMediator<>(brandRepository);
+    this.loggedInUserService = loggedInUserService;
   }
 
   @Override
@@ -46,8 +50,16 @@ public class BrandServiceImpl implements BrandService {
     brandEntity.setUniqueName(name);
     brandEntity.setLogo(extractByteFromMultipartFile(logo));
     brandEntity.setLogoFileName(logo.getOriginalFilename());
+    brandEntity.setOrg(getLoggedInUser().getOrg());
     brandEntity = brandRepository.save(brandEntity);
     return brandEntity;
+  }
+
+  private UserEntity getLoggedInUser() {
+    return loggedInUserService.getUser().orElseThrow(() ->
+            new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
+                    .detailMessage("Org not present in LoggedIn user's context ")
+                    .build());
   }
 
   @Override

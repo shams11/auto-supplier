@@ -11,9 +11,6 @@ public class OrganizationMapper implements ControllerMapper<OrgEntity, Organizat
   @Override
   public OrgEntity toEntity(Organization org) {
 
-    if (org == null) {
-      return null;
-    }
     OrgEntity orgEntity = new OrgEntity();
     orgEntity.setUnique_name(org.getName());
     return orgEntity;
@@ -21,9 +18,7 @@ public class OrganizationMapper implements ControllerMapper<OrgEntity, Organizat
 
   @Override
   public Organization toPojo(OrgEntity orgEntity) {
-    if (orgEntity == null) {
-      return null;
-    }
+
     return Organization.builder()
             .id(orgEntity.getId().toString())
             .name(orgEntity.getUnique_name())

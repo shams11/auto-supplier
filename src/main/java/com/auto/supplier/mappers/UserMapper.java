@@ -1,10 +1,13 @@
 package com.auto.supplier.mappers;
 
+import com.auto.supplier.commons.exceptions.ServiceException;
 import com.auto.supplier.commons.mappers.ControllerMapper;
+import com.auto.supplier.commons.models.MessageKey;
 import com.auto.supplier.commons.models.Permission;
 import com.auto.supplier.commons.models.Role;
 import com.auto.supplier.entities.UserEntity;
 import com.auto.supplier.models.User;
+import com.auto.supplier.services.LoggedInUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
@@ -15,10 +18,12 @@ public class UserMapper implements ControllerMapper<UserEntity, User> {
   private static final int ACTIVE = 1;
 
   private final OrganizationMapper organizationMapper;
+  private final LoggedInUserService loggedInUserService;
 
   @Autowired
-  public UserMapper(OrganizationMapper organizationMapper) {
+  public UserMapper(OrganizationMapper organizationMapper, LoggedInUserService loggedInUserService) {
     this.organizationMapper = organizationMapper;
+    this.loggedInUserService = loggedInUserService;
   }
 
   @Override
@@ -31,8 +36,15 @@ public class UserMapper implements ControllerMapper<UserEntity, User> {
     userEntity.setFname(user.getFname());
     userEntity.setLname(user.getLname());
     userEntity.setUsername(user.getUsername());
-    userEntity.setOrg(organizationMapper.toEntity(user.getOrg()));
+    userEntity.setOrg(getLoggedInUser().getOrg());
     return userEntity;
+  }
+
+  private UserEntity getLoggedInUser() {
+    return loggedInUserService.getUser().orElseThrow(() ->
+            new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
+                    .detailMessage("Org not present in LoggedIn user's context ")
+                    .build());
   }
 
   @Override

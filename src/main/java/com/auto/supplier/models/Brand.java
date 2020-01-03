@@ -17,6 +17,9 @@ public class Brand {
 
   private String logoFileName;
 
+
   private byte[] logo;
+
+  private Organization org;
 
 }

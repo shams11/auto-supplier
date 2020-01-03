@@ -59,7 +59,6 @@ INSERT INTO SA_USER (id, username, password, first_name, last_name, email, activ
 VALUES ('FBB4280F964945019DE711CD72C42DC2','afreen', '$2a$04$yJDYAjGMPx6M8Uzrum.b8.WZy2k9suE4heCm.RB8j9jX70tv1bltS', 'afreen', 'inamdar', 'afreeninamdar20@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0, '0DE7E64ECDE94AFB935D6C77098F8F18');
 INSERT INTO USER_ROLE (USER_ID, ROLE_ID) VALUES ('FBB4280F964945019DE711CD72C42DC2', 'F1BD130A6F2F11E8ADC0FA7AE01BBEBC');
 
-
 -- lead users
 INSERT INTO SA_USER (id, username, password, first_name, last_name, email, active, created_by_user, modified_by_user, time_created, time_updated, version, org_id)
 VALUES ('41B15CEBD00C46A3AB36C98C8A5E83CB','khaja', '$2a$04$ZN9Nn3yxsE7rxQc3xpCnxO4OcfYqkqPvWjhe0yP1Fc5pxJ99Ad9tO', 'khaja', 'moin', 'khaja@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0, '0DE7E64ECDE94AFB935D6C77098F8F18');

@@ -72,6 +72,7 @@ public class UserEntity extends BaseEntity implements Serializable {
     this.setEmail(userEntity.getEmail());
     this.setFname(userEntity.getFname());
     this.setLname(userEntity.getLname());
+    this.setOrg(userEntity.getOrg());
     this.setRoles(userEntity.getRoles());
     this.setId(userEntity.getId());
   }

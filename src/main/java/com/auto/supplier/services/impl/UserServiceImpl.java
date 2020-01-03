@@ -3,7 +3,6 @@ package com.auto.supplier.services.impl;
 import com.auto.supplier.commons.exceptions.ServiceException;
 import com.auto.supplier.commons.models.MessageKey;
 import com.auto.supplier.commons.models.Role;
-import com.auto.supplier.commons.models.RoleConstant;
 import com.auto.supplier.commons.services.CrudServiceMediator;
 import com.auto.supplier.commons.utils.LoggingProfiler;
 import com.auto.supplier.entities.ResetPasswordEntity;
@@ -16,6 +15,7 @@ import com.auto.supplier.repositories.UserRepository;
 import com.auto.supplier.services.MailService;
 import com.auto.supplier.services.RoleService;
 import com.auto.supplier.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,13 +24,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 
 @LoggingProfiler
 @Service

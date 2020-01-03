@@ -1,5 +1,6 @@
 package com.auto.supplier.services.impl;
 
+import com.auto.supplier.entities.OrgEntity;
 import com.auto.supplier.entities.UserEntity;
 import com.auto.supplier.services.LoggedInUserService;
 import org.springframework.stereotype.Service;
@@ -14,5 +15,10 @@ public class LoggedInUserServiceImpl implements LoggedInUserService {
       return Optional.empty();
     }
     return Optional.ofNullable((UserEntity) getAuthentication().getPrincipal());
+  }
+
+  @Override
+  public Optional<OrgEntity> getOrg() {
+    return getUser().map(UserEntity::getOrg);
   }
 }
