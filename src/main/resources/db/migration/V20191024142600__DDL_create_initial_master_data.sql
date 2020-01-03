@@ -43,17 +43,24 @@ INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES ('F1BD130A6F2F11E8AD
 INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES ('F1BD130A6F2F11E8ADC0FA7AE01BBEBC', '41610FEA664541F485ADFE5039E0EC27'); -- DELETE_PART
 INSERT INTO ROLE_PERMISSION (ROLE_ID, PERMISSION_ID) VALUES ('F1BD130A6F2F11E8ADC0FA7AE01BBEBC', '200CC4E0B60B446686DDE8F2C8D2B840'); -- READ_PART
 
+-- ORG
+INSERT INTO ORG (id, unique_name, created_by_user, modified_by_user, time_created, time_updated, version)
+VALUES ('0DE7E64ECDE94AFB935D6C77098F8F18', 'asahi', NULL, NULL, NOW(), NOW(), 0);
+
+INSERT INTO ORG (id, unique_name, created_by_user, modified_by_user, time_created, time_updated, version)
+VALUES ('0361E9340682421B9E3EF8BB3B251B27', 'jbm', NULL, NULL, NOW(), NOW(), 0);
+
 -- admin users
-INSERT INTO SA_USER (id, username, password, first_name, last_name, email, active, created_by_user, modified_by_user, time_created, time_updated, version)
-VALUES ('77ECEB74CDE74B1AA04047B20E6FED77','shams', '$2a$04$DpvSzYDd8ChJmpYuN6bXTOyVVgjxGeqhAw0n5VrPYh2lS.zWZiVjy', 'shams', 'tabrez', 'shams.tabrez11@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0);
+INSERT INTO SA_USER (id, username, password, first_name, last_name, email, active, created_by_user, modified_by_user, time_created, time_updated, version, org_id)
+VALUES ('77ECEB74CDE74B1AA04047B20E6FED77','shams', '$2a$04$DpvSzYDd8ChJmpYuN6bXTOyVVgjxGeqhAw0n5VrPYh2lS.zWZiVjy', 'shams', 'tabrez', 'shams.tabrez11@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0, '0DE7E64ECDE94AFB935D6C77098F8F18');
 INSERT INTO USER_ROLE (USER_ID, ROLE_ID) VALUES ('77ECEB74CDE74B1AA04047B20E6FED77', 'F1BD130A6F2F11E8ADC0FA7AE01BBEBC');
 
-INSERT INTO SA_USER (id, username, password, first_name, last_name, email, active, created_by_user, modified_by_user, time_created, time_updated, version)
-VALUES ('FBB4280F964945019DE711CD72C42DC2','afreen', '$2a$04$yJDYAjGMPx6M8Uzrum.b8.WZy2k9suE4heCm.RB8j9jX70tv1bltS', 'afreen', 'inamdar', 'afreeninamdar20@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0);
+INSERT INTO SA_USER (id, username, password, first_name, last_name, email, active, created_by_user, modified_by_user, time_created, time_updated, version, org_id)
+VALUES ('FBB4280F964945019DE711CD72C42DC2','afreen', '$2a$04$yJDYAjGMPx6M8Uzrum.b8.WZy2k9suE4heCm.RB8j9jX70tv1bltS', 'afreen', 'inamdar', 'afreeninamdar20@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0, '0DE7E64ECDE94AFB935D6C77098F8F18');
 INSERT INTO USER_ROLE (USER_ID, ROLE_ID) VALUES ('FBB4280F964945019DE711CD72C42DC2', 'F1BD130A6F2F11E8ADC0FA7AE01BBEBC');
 
 
 -- lead users
-INSERT INTO SA_USER (id, username, password, first_name, last_name, email, active, created_by_user, modified_by_user, time_created, time_updated, version)
-VALUES ('41B15CEBD00C46A3AB36C98C8A5E83CB','khaja', '$2a$04$ZN9Nn3yxsE7rxQc3xpCnxO4OcfYqkqPvWjhe0yP1Fc5pxJ99Ad9tO', 'khaja', 'moin', 'khaja@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0);
+INSERT INTO SA_USER (id, username, password, first_name, last_name, email, active, created_by_user, modified_by_user, time_created, time_updated, version, org_id)
+VALUES ('41B15CEBD00C46A3AB36C98C8A5E83CB','khaja', '$2a$04$ZN9Nn3yxsE7rxQc3xpCnxO4OcfYqkqPvWjhe0yP1Fc5pxJ99Ad9tO', 'khaja', 'moin', 'khaja@gmail.com', 1, NULL, NULL, NOW(), NOW(), 0, '0DE7E64ECDE94AFB935D6C77098F8F18');
 INSERT INTO USER_ROLE (USER_ID, ROLE_ID) VALUES ('41B15CEBD00C46A3AB36C98C8A5E83CB', 'DD6F14ED65A94B20B7F8BEEB0523511F');

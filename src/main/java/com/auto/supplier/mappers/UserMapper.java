@@ -5,6 +5,7 @@ import com.auto.supplier.commons.models.Permission;
 import com.auto.supplier.commons.models.Role;
 import com.auto.supplier.entities.UserEntity;
 import com.auto.supplier.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,13 @@ import java.util.stream.Collectors;
 public class UserMapper implements ControllerMapper<UserEntity, User> {
 
   private static final int ACTIVE = 1;
+
+  private final OrganizationMapper organizationMapper;
+
+  @Autowired
+  public UserMapper(OrganizationMapper organizationMapper) {
+    this.organizationMapper = organizationMapper;
+  }
 
   @Override
   public UserEntity toEntity(User user) {
@@ -23,6 +31,7 @@ public class UserMapper implements ControllerMapper<UserEntity, User> {
     userEntity.setFname(user.getFname());
     userEntity.setLname(user.getLname());
     userEntity.setUsername(user.getUsername());
+    userEntity.setOrg(organizationMapper.toEntity(user.getOrg()));
     return userEntity;
   }
 
@@ -38,6 +47,7 @@ public class UserMapper implements ControllerMapper<UserEntity, User> {
         .email(userEntity.getEmail())
         .fname(userEntity.getFname())
         .lname(userEntity.getLname())
+        .org(organizationMapper.toPojo(userEntity.getOrg()))
         .roles(userEntity.getRoles().stream().map(roleEntity -> Role.builder()
             .id(roleEntity.getId().toString())
             .uniqueName(roleEntity.getUniqueName())

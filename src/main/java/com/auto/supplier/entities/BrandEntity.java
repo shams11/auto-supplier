@@ -7,8 +7,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.EqualsAndHashCode;
@@ -19,12 +21,13 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "BRAND",
-    indexes = {
-        @Index(name = "IDX_BRAND_NAME", columnList = "unique_name", unique = true)
-    },
-    uniqueConstraints = {
-        @UniqueConstraint(name = "UK_BRAND_NAME", columnNames = {"unique_name"})
-    })
+        indexes = {
+                @Index(name = "IDX_BRAND_ORG_ID", columnList = "org_id, unique_name", unique = true)
+
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UK_UNIQUE_NAME_ORG_ID", columnNames = {"unique_name", "org_id"})
+        })
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true, of = {}) // keep {} to only include id/version from BaseEntity
@@ -39,6 +42,10 @@ public class BrandEntity extends BaseEntity implements Serializable {
       name = "logo_file_name"
   )
   private String logoFileName;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "org_id", nullable = false)
+  private OrgEntity org;
 
   @Column(
       nullable = false,

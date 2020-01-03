@@ -3,6 +3,7 @@ package com.auto.supplier.services.impl;
 import com.auto.supplier.commons.exceptions.ServiceException;
 import com.auto.supplier.commons.models.MessageKey;
 import com.auto.supplier.commons.models.Role;
+import com.auto.supplier.commons.models.RoleConstant;
 import com.auto.supplier.commons.services.CrudServiceMediator;
 import com.auto.supplier.commons.utils.LoggingProfiler;
 import com.auto.supplier.entities.ResetPasswordEntity;
@@ -177,24 +178,25 @@ public class UserServiceImpl implements UserService {
 
   private void associateRoles(UserEntity userEntity, Set<Role> roles) {
     if (CollectionUtils.isEmpty(roles)) {
-      throw new ServiceException.Builder(MessageKey.ILLEGAL_FIELD)
-          .args("roles")
-          .detailMessage(String.format("Role is empty for username ",
-              userEntity.getUsername()))
-          .build();
+      userEntity.setRoles(Set.of(findRole("LEAD")));
+      return;
     }
     roles.forEach(role -> findAndAddRole(userEntity, role.getUniqueName()));
   }
 
-
   private void findAndAddRole(UserEntity userEntity, String roleName) {
-    RoleEntity roleEntity = roleService
-        .findByUniqueName(roleName)
-        .orElseThrow(() -> new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
-            .detailMessage("Could not find role to be associated with the user")
-            .build());
+    RoleEntity roleEntity = findRole(roleName);
     userEntity.addRole(roleEntity);
   }
+
+  private RoleEntity findRole(String roleName) {
+    return roleService
+            .findByUniqueName(roleName)
+            .orElseThrow(() -> new ServiceException.Builder(MessageKey.ENTITY_NOT_FOUND)
+                    .detailMessage("Could not find role to be associated with the user")
+                    .build());
+  }
+
 
   @Override
   @PreAuthorize("hasAuthority('UPDATE_USER')")

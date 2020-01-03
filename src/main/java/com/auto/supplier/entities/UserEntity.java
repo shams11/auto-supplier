@@ -11,6 +11,7 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.EqualsAndHashCode;
@@ -21,9 +22,13 @@ import lombok.ToString;
 @Entity
 @Table(name = "SA_USER",
     indexes = {
-        @Index(name = "IDX_USER_NAME", columnList = "username", unique = true),
-        @Index(name = "IDX_EMAIL", columnList = "email", unique = true)
-    })
+        @Index(name = "IDX_USER_USERNAME", columnList = "username", unique = true),
+        @Index(name = "IDX_USER_EMAIL", columnList = "email", unique = true)
+    },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UK_EMAIL_ORG_ID", columnNames = {"email", "org_id"}),
+                @UniqueConstraint(name = "UK_USERNAME_ORG_ID", columnNames = {"username", "org_id"})
+        })
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true, of = {}) // keep {} to only include id/version from BaseEntity
@@ -47,6 +52,10 @@ public class UserEntity extends BaseEntity implements Serializable {
 
   @Column(name = "active")
   private int active;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "org_id", nullable = false)
+  private OrgEntity org;
 
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
       fetch = FetchType.EAGER)

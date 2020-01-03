@@ -90,4 +90,11 @@ public class BrandController {
                       @RequestParam("logo") MultipartFile logo) {
     return modelmapper.toPojo(modelService.createModel(brandId, name, logo));
   }
+
+  @GetMapping(value = "/image/{id}",
+          produces = MediaType.IMAGE_JPEG_VALUE)
+  public byte[] getBrandImage(@PathVariable(value = "id") UUID id) {
+    Brand brand = brandmapper.toPojo(brandService.getLogoById(id));
+    return brand.getLogo();
+  }
 }

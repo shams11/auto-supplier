@@ -15,6 +15,10 @@ spring:
       pool-name: auto-supplier
       connection-timeout: 60000  # Default: 30000 (30 seconds)
       maximum-pool-size: 5
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   datasource.platform: hsqldb
 

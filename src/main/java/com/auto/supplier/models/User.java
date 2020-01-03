@@ -29,6 +29,8 @@ public class User {
 
   private String email;
 
+  private Organization org;
+
   @JsonIgnore
   private SensitiveString password;
 
