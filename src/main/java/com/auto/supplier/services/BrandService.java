@@ -15,5 +15,5 @@ public interface BrandService {
 
   BrandEntity updateBrand(UUID id, String name, MultipartFile logo);
 
-  List<BrandEntity> getAllBrands();
+  List<BrandEntity> getAllBrands(UUID orgId);
 }

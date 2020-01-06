@@ -58,11 +58,13 @@ public class BrandController {
     return brandmapper.toPojo(brandService.getLogoById(id));
   }
 
-  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<Brand> getAllBrands() {
-    return brandService.getAllBrands().stream()
-        .map(brandmapper::toPojo)
-        .collect(Collectors.toList());
+  @GetMapping(params = "orgId",
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Brand> getAllBrands(@RequestParam(value = "orgId") UUID orgId) {
+    return brandService.getAllBrands(orgId)
+            .stream()
+            .map(brandmapper::toPojo)
+            .collect(Collectors.toList());
   }
 
   @PutMapping(value = "/{id}",

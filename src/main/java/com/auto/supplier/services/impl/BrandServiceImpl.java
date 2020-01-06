@@ -92,8 +92,10 @@ public class BrandServiceImpl implements BrandService {
   }
 
   @Override
-  public List<BrandEntity> getAllBrands() {
-    return brandRepository.findAll();
+  @PreAuthorize("hasAuthority('READ_BRAND')")
+  public List<BrandEntity> getAllBrands(UUID orgId) {
+    UserEntity userEntity = getLoggedInUser();
+    return brandRepository.findByOrg(userEntity.getOrg());
   }
 
   private byte[] extractByteFromMultipartFile(MultipartFile logo) {

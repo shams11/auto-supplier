@@ -37,8 +37,8 @@ public class BrandMapper implements ControllerMapper<BrandEntity, Brand> {
         .id(brandEntity.getId().toString())
         .name(brandEntity.getUniqueName())
         .logoFileName(brandEntity.getLogoFileName())
-        .logo(brandEntity.getLogo())
         .org(organizationMapper.toPojo(brandEntity.getOrg()))
+        .logo(brandEntity.getLogo())
         .build();
   }
 }
