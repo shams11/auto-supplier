@@ -1,5 +1,6 @@
 package com.auto.supplier.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class Brand {
 
   private String logoFileName;
 
-
+  @JsonIgnore
   private byte[] logo;
 
   private Organization org;

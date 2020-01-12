@@ -18,4 +18,5 @@ public interface ModelService {
   List<ModelEntity> getAllModels();
 
   List<ModelEntity> getAllModelsByBrand(UUID brandId);
+
 }

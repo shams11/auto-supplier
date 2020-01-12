@@ -88,4 +88,11 @@ public class ModelController {
                          @RequestBody @Valid Variant variant) {
     return variantMapper.toPojo(variantService.createVariant(modelId, variant));
   }
+
+  @GetMapping(value = "/image/{id}",
+          produces = MediaType.IMAGE_JPEG_VALUE)
+  public byte[] getModelImageById(@PathVariable(value = "id") UUID id) {
+    Model model = modelmapper.toPojo(modelService.getModelById(id));
+    return model.getLogo();
+  }
 }

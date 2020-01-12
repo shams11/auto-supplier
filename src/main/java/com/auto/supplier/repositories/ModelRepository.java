@@ -11,4 +11,6 @@ public interface ModelRepository extends GenericCrudRepository<ModelEntity, UUID
   Optional<ModelEntity> findByUniqueName(String name);
 
   List<ModelEntity> findAllByBrandId(UUID brandId);
+
+  Optional<ModelEntity> findByBrandId(UUID brandId);
 }
