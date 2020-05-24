@@ -20,6 +20,8 @@ public class ProductionData {
 
   private String groupName;
 
+  private Integer index;
+
   private List<ProductDimension> dimensions;
 
 }

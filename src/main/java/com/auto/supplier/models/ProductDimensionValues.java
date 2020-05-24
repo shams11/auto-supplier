@@ -16,13 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.NON_NULL)
-public class ProductDimension {
+public class ProductDimensionValues {
 
-  private Integer index;
+  private String trial;
 
-  private String subHeading;
+  private String name;
 
-  private String subHeadingIndex;
+  private String standardValue;
 
-  private List<ProductDimensionValues> values;
+  private List<String> actualValues;
 }
