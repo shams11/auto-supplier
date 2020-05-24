@@ -7,6 +7,7 @@ import com.auto.supplier.models.Part;
 import com.auto.supplier.models.Variant;
 import com.auto.supplier.services.PartService;
 import com.auto.supplier.services.VariantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 
 @RestController
 @LoggingProfiler
+@RequiredArgsConstructor
 @RequestMapping("/v1/variants")
 public class VariantController {
 
@@ -33,14 +35,6 @@ public class VariantController {
   private final VariantMapper variantMapper;
   private final PartService partService;
   private final PartMapper partMapper;
-
-  public VariantController(VariantService variantService, VariantMapper variantMapper,
-                           PartService partService, PartMapper partMapper) {
-    this.variantService = variantService;
-    this.variantMapper = variantMapper;
-    this.partService = partService;
-    this.partMapper = partMapper;
-  }
 
   @GetMapping(value = "/{id}",
       produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,8 +55,8 @@ public class VariantController {
   }
 
   @PutMapping(value = "/{id}",
-      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public Variant update(
       @PathVariable("id") UUID id,
       @RequestBody Variant variant) {
@@ -76,8 +70,8 @@ public class VariantController {
   }
 
   @PostMapping(value = "/{variantId}/parts",
-      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE
   )
   @ResponseStatus(HttpStatus.CREATED)
   public Part createPart(@PathVariable("variantId") UUID variantId,

@@ -1,12 +1,11 @@
 package com.auto.supplier.services;
 
-import com.auto.supplier.entities.ProductionDataEntity;
-import com.auto.supplier.models.ProductionData;
+import com.auto.supplier.entities.ProductionRecordEntity;
 import java.util.UUID;
 
 public interface ProductionDataService {
 
-  ProductionDataEntity createProductionData(ProductionData productionData);
+  ProductionRecordEntity createProductionData(ProductionRecordEntity productionRecordEntity);
 
-  ProductionDataEntity findById(UUID uuid);
+  ProductionRecordEntity findById(UUID uuid);
 }

@@ -4,6 +4,7 @@ import com.auto.supplier.commons.utils.LoggingProfiler;
 import com.auto.supplier.mappers.PartMapper;
 import com.auto.supplier.models.Part;
 import com.auto.supplier.services.PartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,16 +22,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @LoggingProfiler
+@RequiredArgsConstructor
 @RequestMapping("/v1/parts")
 public class PartController {
 
   private final PartService partService;
   private final PartMapper partMapper;
-
-  public PartController(PartService partService, PartMapper partMapper) {
-    this.partService = partService;
-    this.partMapper = partMapper;
-  }
 
   @GetMapping(value = "/{id}",
       produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,8 +48,8 @@ public class PartController {
   }
 
   @PutMapping(value = "/{id}",
-      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public Part update(
       @PathVariable("id") UUID id,
       @RequestBody Part part) {

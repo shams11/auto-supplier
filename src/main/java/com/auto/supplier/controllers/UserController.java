@@ -1,10 +1,10 @@
 package com.auto.supplier.controllers;
 
-import com.auto.supplier.models.User;
 import com.auto.supplier.commons.utils.LoggingProfiler;
 import com.auto.supplier.mappers.UserMapper;
+import com.auto.supplier.models.User;
 import com.auto.supplier.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,21 +26,16 @@ import javax.validation.Valid;
 
 @RestController
 @LoggingProfiler
+@RequiredArgsConstructor
 @RequestMapping("/v1/users")
 public class UserController {
 
   private final UserService userService;
   private final UserMapper userMapper;
 
-  @Autowired
-  public UserController(UserService userService, UserMapper userMapper) {
-    this.userService = userService;
-    this.userMapper = userMapper;
-  }
-
   @PostMapping(
-      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE
   )
   @ResponseStatus(HttpStatus.CREATED)
   public User createUser(
@@ -50,8 +45,8 @@ public class UserController {
   }
 
   @PutMapping(value = "/{id}",
-      consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
 
   public User update(
       @PathVariable("id") UUID id,

@@ -7,6 +7,7 @@ import com.auto.supplier.models.Brand;
 import com.auto.supplier.models.Model;
 import com.auto.supplier.services.BrandService;
 import com.auto.supplier.services.ModelService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @LoggingProfiler
+@RequiredArgsConstructor
 @RequestMapping("/v1/brands")
 public class BrandController {
 
@@ -33,18 +35,9 @@ public class BrandController {
   private final ModelService modelService;
   private final ModelMapper modelmapper;
 
-  public BrandController(BrandService brandService, BrandMapper brandmapper,
-                         ModelService modelService, ModelMapper modelmapper) {
-    this.brandService = brandService;
-    this.brandmapper = brandmapper;
-    this.modelService = modelService;
-    this.modelmapper = modelmapper;
-  }
-
-
   @PostMapping(
       consumes = {"multipart/form-data"},
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+      produces = MediaType.APPLICATION_JSON_VALUE
   )
   @ResponseStatus(HttpStatus.CREATED)
   public Brand create(@RequestParam(value = "name") String name,
@@ -68,7 +61,7 @@ public class BrandController {
   }
 
   @PutMapping(value = "/{id}",
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public Brand update(
       @PathVariable("id") UUID id,
       @RequestParam("logo") MultipartFile logo,
@@ -84,7 +77,7 @@ public class BrandController {
 
   @PostMapping( value = "/{brandId}/models",
       consumes = {"multipart/form-data"},
-      produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+      produces = MediaType.APPLICATION_JSON_VALUE
   )
   @ResponseStatus(HttpStatus.CREATED)
   public Model createModel(@PathVariable("brandId") UUID brandId,

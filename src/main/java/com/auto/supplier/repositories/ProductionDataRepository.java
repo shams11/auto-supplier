@@ -1,14 +1,17 @@
 package com.auto.supplier.repositories;
 
-import com.auto.supplier.entities.ProductionDataEntity;
+import com.auto.supplier.entities.ProductionRecordEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProductionDataRepository  extends GenericCrudRepository<ProductionDataEntity, UUID> {
+@Transactional(readOnly = true)
+public interface ProductionDataRepository
+    extends GenericCrudRepository<ProductionRecordEntity, UUID> {
 
-  Optional<ProductionDataEntity> findByPartId(UUID partId);
+  Optional<ProductionRecordEntity> findByPartId(UUID partId);
 
-  Optional<ProductionDataEntity> findByVariantId(UUID variantId);
+  Optional<ProductionRecordEntity> findByVariantId(UUID variantId);
 }

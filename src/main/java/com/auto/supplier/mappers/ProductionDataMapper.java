@@ -1,29 +1,32 @@
 package com.auto.supplier.mappers;
 
 import com.auto.supplier.commons.mappers.ControllerMapper;
-import com.auto.supplier.entities.ProductionDataEntity;
-import com.auto.supplier.models.ProductionData;
+import com.auto.supplier.entities.ProductionRecordEntity;
+import com.auto.supplier.models.ProductionRecord;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductionDataMapper implements ControllerMapper<ProductionDataEntity, ProductionData> {
+public class ProductionDataMapper implements
+    ControllerMapper<ProductionRecordEntity, ProductionRecord> {
 
   @Override
-  public ProductionDataEntity toEntity(ProductionData productionData) {
-    ProductionDataEntity productionDataEntity = new ProductionDataEntity();
-    productionDataEntity.setPartId(productionData.getPartId());
-    productionDataEntity.setVariantId(productionData.getVariantId());
-    productionDataEntity.populateDataFromMap(productionData.getData());
-    return productionDataEntity;
+  public ProductionRecordEntity toEntity(ProductionRecord productionRecord) {
+    ProductionRecordEntity productionRecordEntity = new ProductionRecordEntity();
+    productionRecordEntity.setPartId(productionRecord.getPartId());
+    productionRecordEntity.setVariantId(productionRecord.getVariantId());
+    productionRecordEntity.populateProductionData(productionRecord.getProductionData());
+    productionRecordEntity.setCompanyName("Dummy Company");
+    productionRecordEntity.setUserCode("Dummy user code");
+    return productionRecordEntity;
   }
 
   @Override
-  public ProductionData toPojo(ProductionDataEntity productionDataEntity) {
-    return ProductionData.builder()
-            .id(productionDataEntity.getId())
-            .partId(productionDataEntity.getPartId())
-            .variantId(productionDataEntity.getVariantId())
-            .data(productionDataEntity.filterAsMap())
+  public ProductionRecord toPojo(ProductionRecordEntity productionRecordEntity) {
+    return ProductionRecord.builder()
+            .id(productionRecordEntity.getId())
+            .partId(productionRecordEntity.getPartId())
+            .variantId(productionRecordEntity.getVariantId())
+            .productionData(productionRecordEntity.productionDataAsList())
             .build();
   }
 }

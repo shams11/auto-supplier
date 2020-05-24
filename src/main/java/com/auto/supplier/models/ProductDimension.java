@@ -7,19 +7,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import java.util.List;
 
 @Builder
 @Getter
 @ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY, content = JsonInclude.Include.NON_NULL)
-public class ProductionData {
-
-  private String groupName;
-
-  private List<ProductDimension> dimensions;
-
+public class ProductDimension {
+  private String name;
+  private String standardValue;
 }

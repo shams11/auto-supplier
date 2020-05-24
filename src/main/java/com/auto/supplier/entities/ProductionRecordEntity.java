@@ -3,26 +3,25 @@ package com.auto.supplier.entities;
 import com.auto.supplier.commons.exceptions.ServiceException;
 import com.auto.supplier.commons.models.MessageKey;
 import com.auto.supplier.commons.utils.JsonUtils;
+import com.auto.supplier.models.ProductionData;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Map;
-import java.util.UUID;
-import org.springframework.util.StringUtils;
 
 @Entity
-@Table(name = "PRODUCTION_DATA",
+@Table(name = "PRODUCTION_RECORD",
         indexes = {
                 @Index(name = "IDX_VARIANT_ID_PART_ID", columnList = "part_id, variant_id")
         })
@@ -30,7 +29,7 @@ import org.springframework.util.StringUtils;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class ProductionDataEntity extends BaseEntity implements Serializable {
+public class ProductionRecordEntity extends BaseEntity implements Serializable {
 
   @NonNull
   @Column(name = "part_id", nullable = false)
@@ -40,15 +39,23 @@ public class ProductionDataEntity extends BaseEntity implements Serializable {
   @Column(name = "variant_id", nullable = false)
   public UUID variantId;
 
+  @NonNull
+  @Column(name = "company_name", nullable = false)
+  public String companyName;
+
+  @NonNull
+  @Column(name = "user_code", nullable = false)
+  public String userCode;
+
 
   @Column(name = "data")
   @Lob
-  private String data;
+  private String productionData;
 
-  public void populateDataFromMap(Map<String, Object> data) {
+  public void populateProductionData(List<ProductionData> productionData) {
     try {
-      if (data != null) {
-        this.data = JsonUtils.getJsonFromObject(data);
+      if (productionData != null) {
+        this.productionData = JsonUtils.getJsonFromObject(productionData);
       }
     } catch (JsonProcessingException e) {
       throw new ServiceException.Builder(MessageKey.BAD_REQUEST)
@@ -58,19 +65,18 @@ public class ProductionDataEntity extends BaseEntity implements Serializable {
     }
   }
 
-  public Map<String, Object> filterAsMap() {
-    if (!StringUtils.isEmpty(data)) {
+  public List<ProductionData> productionDataAsList() {
+    if (productionData != null) {
       try {
-        return JsonUtils.getObjectFromJson(
-                data, new TypeReference<Map<String, Object>>() {
-                });
+        return JsonUtils.getListOfObjectFromJson(productionData, ProductionData.class);
       } catch (IOException e) {
-        throw new ServiceException.Builder(MessageKey.INTERNAL_SERVER_ERROR)
-                .detailMessage("Content stored in the filter column is not of type Map")
+        throw new ServiceException.Builder(MessageKey.BAD_REQUEST)
+                .detailMessage("Content stored in the productionData " +
+                    "column is not of type ProductionData")
                 .throwable(e)
                 .build();
       }
     }
-    return Map.of();
+    return List.of();
   }
 }
